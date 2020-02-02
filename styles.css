@@ -1,0 +1,20 @@
+body{
+    text-align: center;
+    
+}
+.calculator{
+    width: max-content;
+    margin: 3em auto;
+}
+.display input {
+    text-align: center;
+    width: 90%;
+}
+.row button{
+    margin: 0.25em 0.25em;
+    width: 5em;
+    text-align: center;
+}
+#zero_button{
+    
+}
