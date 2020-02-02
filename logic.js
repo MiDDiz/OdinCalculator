@@ -1,5 +1,5 @@
 //Global variables
-let globalOne;
+let globalOne = 0;
 let globalTwo;
 let globalTemp = 0;
 let operator;
@@ -48,7 +48,7 @@ function addNumber (number, document) {
     globalTemp += `${number}`;
 }
 function addOperator (operandom, document) {
-    globalOne = +globalTemp;
+    globalOne += +globalTemp;
     globalTemp = 0;
     operator = operandom;
     document.value += ` ${operandom} `;
@@ -104,7 +104,7 @@ btn8.addEventListener("click", () => {
 });
 btn9.addEventListener("click", () => {
     addNumber(9, form);
-});
+}); 
 btn0.addEventListener("click", () => {
     addNumber(0, form);
 });
@@ -128,8 +128,12 @@ btnequals.addEventListener("click", () => {
     globalTwo = +globalTemp
     globalTemp = 0;
     let result = operate(operator, globalOne, globalTwo);
+    globalOne = result;
     form.value = result;
 });
 btnclear.addEventListener("click", () => {
-
+    globalOne = 0;
+    globalTwo = 0;
+    globalTemp = 0;
+    form.value = "";
 });
