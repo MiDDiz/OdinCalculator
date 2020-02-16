@@ -112,7 +112,7 @@ function calculate(){
     arrayOperands.forEach(element => {
         if(element === operators[2] || element === operators[3]){
             let pos = arrayOperands.indexOf(element);
-            arrayOperands[pos] = operate(element, +arrayOperands[pos - 1], +arrayOperands[p93os + 1]);
+            arrayOperands[pos] = operate(element, +arrayOperands[pos - 1], +arrayOperands[pos + 1]);
             arrayOperands[pos - 1] = false;
             arrayOperands[pos + 1] = false;
             arrayOperands = arrayOperands.filter(Boolean);
