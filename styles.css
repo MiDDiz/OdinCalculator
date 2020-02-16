@@ -2,6 +2,10 @@
     font-family: Calculator; src: url('Assets/digital-7.ttf'); 
 } 
 
+html{
+    background-image: url("./Assets/bg.png");
+}
+
 body{
     text-align: center;
     font-family: "Lucida Console", Monaco, monospace;
@@ -59,8 +63,4 @@ button:focus {
 }
 a:focus { 
     outline: none; 
-}
-
-#zero_button{
-    
 }
