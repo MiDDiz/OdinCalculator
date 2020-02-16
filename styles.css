@@ -7,10 +7,12 @@ html{
 }
 
 body{
-    text-align: center;
+    
+    font-weight: 1000;
     font-family: "Lucida Console", Monaco, monospace;
 }
 .calculator{
+    display: block;
     width: min-content;
     margin: 3em auto;
     padding: 2em;
@@ -21,7 +23,7 @@ body{
 }
 .display input {
     text-align: center;
-    width: 88%;
+    width: 92%;
     height: 4em;
     margin-bottom: 1em;
     
@@ -30,14 +32,19 @@ body{
     font: 400 33.3333px Calculator;
     
 }
-
+.display{
+    margin: 0 auto;
+    float: none;
+    width: 100%;
+    size: inherit;
+}
 .row{
     white-space: nowrap;
     padding-bottom: 1em;
 }
 
 .row button{
-    margin: 0.5em 0.1em;
+    margin: 0.4em 0.1em;
     border-radius: 0;
     border-color: black;
     background-color: #757575;
@@ -53,7 +60,30 @@ body{
     transition-duration: 0.3s;
     color: #444444;
 }
-
+.row-ce{
+    white-space: normal;
+    width: fit-content;
+    height: fit-content;
+    float: right;
+    margin: 0;
+}
+.row-ce button{
+    
+    border-radius: 0;
+    border-color: black;
+    background-color: #757575;
+    color: #b71c1c;
+    width: 6em;
+    height: 1.5em;
+    text-align: center;
+    font-size: 2em;
+    transition-duration: 0.3s;
+}
+.row-ce button:hover{
+    background-color: #f44336;
+    transition-duration: 0.3s;
+    color: #444444;
+}
 
 button::-moz-focus-inner {
     border: 0;

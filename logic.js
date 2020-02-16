@@ -68,9 +68,12 @@ function refreshScreen(last_was_number, number){
 
 function appendNumber(number){
 
-    if(checForError()){
+    //Checks for errors. Inline error checking contemplates user inserting double decimal dot.
+    if(checForError() || checkForDecimals(number)){
+
         return;
     }
+
 
     temp += number;
     last_was_operator = false;
@@ -100,10 +103,30 @@ function checForError(){
         temp = "";
         form.value = temp;
     }
+    //Reformats if user didn't itroduce a number before the dot: note it doesnt affect the display.
+    if (temp === "."){
+        temp = "0.";
+    }
+
     if (form.value.length >= 20){
         alert("Too many characters!");
         return true;
     }
+}
+
+function checkForDecimals(character){
+    thistemp = temp;
+    if(character !== ".")
+    {
+        return false;
+    }
+    for (let i = 0; i < thistemp.length; i++) {
+        if (thistemp[i] === "."){
+            return true;
+        }
+        
+    }
+    return false;
 }
 
 function calculate(){
@@ -140,8 +163,8 @@ function calculate(){
             arrayOperands = arrayOperands.filter( e => typeof e != "boolean")
         }
     });
-    console.log("This is: " + arrayOperands[0]);
-    return arrayOperands.pop();
+   
+    return Math.round(arrayOperands.pop() * 100000) / 100000;
 }
 
 
@@ -154,6 +177,7 @@ const btn5 = document.getElementById("btn5");
 const btn6 = document.getElementById("btn6");
 const btn9 = document.getElementById("btn9");
 const btn0 = document.getElementById("btn0");
+const btndot = document.getElementById("btn.");
 const btnplus = document.getElementById("btn+");
 const btnminus = document.getElementById("btn-");
 const btnmult = document.getElementById("btn*");
@@ -199,6 +223,9 @@ btn9.addEventListener("click", () => {
 btn0.addEventListener("click", () => {
     appendNumber(0);
 });
+btndot.addEventListener("click", () =>{
+    appendNumber(".");
+})
 
 //Operators
 btnplus.addEventListener("click", () => {
