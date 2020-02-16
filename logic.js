@@ -1,15 +1,15 @@
 
 let temp;
-let total;
+
 let arrayOperands;
 let last_was_operator;
 
 function initCalc(initTotal){
-    temp = "";
+    temp = initTotal;
     arrayOperands = [];
-    total = initTotal;
+    form.value = "";
     last_was_operator = false;
-    refreshScreen(false, 0);
+    refreshScreen(true, temp);
 }
 
 function sum (num1, num2) {
@@ -23,7 +23,7 @@ function multiply (num1, num2) {
 } 
 function divide (num1, num2) {
     if(!num2) return "ERROR"
-    return num1 / num2;
+    return Math.round((num1 / num2) * 100000) / 100000; //ROund up to 5 decimals :)
 }
 function operate (operator, num1, num2) {
     switch (operator)
@@ -53,14 +53,10 @@ function operate (operator, num1, num2) {
 
 //Flow functions
 
-function appendNumber(number){
-    temp += number;
-    last_was_operator = false;
-    refreshScreen(true, number);
-    return;
-}
+
 
 function refreshScreen(last_was_number, number){
+    
     if(last_was_number){ //Posible optimization of vars: if (last_was_operator -> !last_was_number)
         form.value += number;
     }
@@ -70,7 +66,22 @@ function refreshScreen(last_was_number, number){
     return;
 }
 
+function appendNumber(number){
+
+    if(checForError()){
+        return;
+    }
+
+    temp += number;
+    last_was_operator = false;
+    refreshScreen(true, number);
+    return;
+}
+
 function appendOperator(operator){
+
+    checForError();
+
     if(last_was_operator){
         arrayOperands[arrayOperands.length - 1] = operator;
         refreshScreen(false, 0);
@@ -84,6 +95,17 @@ function appendOperator(operator){
     return;
 }
 
+function checForError(){
+    if (temp === "ERROR"){
+        temp = "";
+        form.value = temp;
+    }
+    if (form.value.length >= 20){
+        alert("Too many characters!");
+        return true;
+    }
+}
+
 function calculate(){
     operators = [
         "*",
@@ -95,17 +117,17 @@ function calculate(){
         arrayOperands.push(temp);
     }
     else{
-        arrayOperands.pop();
+        arrayOperands.pop(); //Destroy last operator.
     }
     
         //Operate mult and div
     arrayOperands.forEach(element => {
         if(element === operators[0] || element === operators[1]){
             let pos = arrayOperands.indexOf(element);
-            arrayOperands[pos] = operate(element, arrayOperands[pos - 1], arrayOperands[pos + 1]);
+            arrayOperands[pos] = operate(element, +arrayOperands[pos - 1], +arrayOperands[pos + 1]);
             arrayOperands[pos - 1] = false;
             arrayOperands[pos + 1] = false;
-            arrayOperands = arrayOperands.filter(Boolean);
+            arrayOperands = arrayOperands.filter( e => typeof e != "boolean")
         }
     });
     //Operate sum and sub
@@ -115,9 +137,10 @@ function calculate(){
             arrayOperands[pos] = operate(element, +arrayOperands[pos - 1], +arrayOperands[pos + 1]);
             arrayOperands[pos - 1] = false;
             arrayOperands[pos + 1] = false;
-            arrayOperands = arrayOperands.filter(Boolean);
+            arrayOperands = arrayOperands.filter( e => typeof e != "boolean")
         }
     });
+    console.log("This is: " + arrayOperands[0]);
     return arrayOperands.pop();
 }
 
@@ -129,8 +152,6 @@ const btn3 = document.getElementById("btn3");
 const btn4 = document.getElementById("btn4");
 const btn5 = document.getElementById("btn5");
 const btn6 = document.getElementById("btn6");
-const btn7 = document.getElementById("btn7");
-const btn8 = document.getElementById("btn8");
 const btn9 = document.getElementById("btn9");
 const btn0 = document.getElementById("btn0");
 const btnplus = document.getElementById("btn+");
@@ -143,7 +164,7 @@ const form = document.getElementById("results")
 
 //Init the calculator
 
-initCalc(0);
+initCalc("");
 
 //Event Listeners
 
@@ -195,9 +216,9 @@ btndivide.addEventListener("click", () => {
 
 //Specials
 btnequals.addEventListener("click", () => {
-    form.value=calculate();
+    initCalc(calculate());
     
 });
 btnclear.addEventListener("click", () => {
-    initCalc(0);
+    initCalc("");
 });
