@@ -94,3 +94,9 @@ button:focus {
 a:focus { 
     outline: none; 
 }
+
+.royale-link img{
+    width: 200px;
+    height: 200px;
+    float: right;
+}
