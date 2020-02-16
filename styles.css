@@ -5,14 +5,24 @@ body{
 .calculator{
     width: max-content;
     margin: 3em auto;
+    padding: 1em;
+    background-color: grey;
+    border: 0.25em solid black;
+    border-top-left-radius: 3em;
+    border-top-right-radius: 3em;
 }
 .display input {
     text-align: center;
-    width: 90%;
+    width: 85%;
+    margin-bottom: 1em;
+    padding: 1em;
+    border: 0.33em solid black;
+    border-top-left-radius: 1.5em;
+    border-top-right-radius: 1.5em;
 }
 .row button{
     margin: 0.25em 0.25em;
-    width: 5em;
+    width: 3.5em;
     text-align: center;
 }
 #zero_button{

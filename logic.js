@@ -1,8 +1,16 @@
-//Global variables
-let globalOne = 0;
-let globalTwo;
-let globalTemp = 0;
-let operator;
+
+let temp;
+let total;
+let arrayOperands;
+let last_was_operator;
+
+function initCalc(initTotal){
+    temp = "";
+    arrayOperands = [];
+    total = initTotal;
+    last_was_operator = false;
+    refreshScreen(false, 0);
+}
 
 function sum (num1, num2) {
     return num1 + num2;
@@ -43,18 +51,78 @@ function operate (operator, num1, num2) {
     }
 }
 
-function addNumber (number, document) {
-    document.value += `${number}`;
-    globalTemp += `${number}`;
-}
-function addOperator (operandom, document) {
-    globalOne += +globalTemp;
-    globalTemp = 0;
-    operator = operandom;
-    document.value += ` ${operandom} `;
+//Flow functions
+
+function appendNumber(number){
+    temp += number;
+    last_was_operator = false;
+    refreshScreen(true, number);
+    return;
 }
 
-//Get buttons and form
+function refreshScreen(last_was_number, number){
+    if(last_was_number){ //Posible optimization of vars: if (last_was_operator -> !last_was_number)
+        form.value += number;
+    }
+    else{
+        form.value = arrayOperands.join(" ") + " ";
+    }
+    return;
+}
+
+function appendOperator(operator){
+    if(last_was_operator){
+        arrayOperands[arrayOperands.length - 1] = operator;
+        refreshScreen(false, 0);
+        return;
+    }
+    arrayOperands.push(temp);
+    temp = "";
+    arrayOperands.push(operator);
+    refreshScreen(false, 0);
+    last_was_operator = true;
+    return;
+}
+
+function calculate(){
+    operators = [
+        "*",
+        "/",
+        "+",
+        "-",
+    ]
+    if(!last_was_operator){
+        arrayOperands.push(temp);
+    }
+    else{
+        arrayOperands.pop();
+    }
+    
+        //Operate mult and div
+    arrayOperands.forEach(element => {
+        if(element === operators[0] || element === operators[1]){
+            let pos = arrayOperands.indexOf(element);
+            arrayOperands[pos] = operate(element, arrayOperands[pos - 1], arrayOperands[pos + 1]);
+            arrayOperands[pos - 1] = false;
+            arrayOperands[pos + 1] = false;
+            arrayOperands = arrayOperands.filter(Boolean);
+        }
+    });
+    //Operate sum and sub
+    arrayOperands.forEach(element => {
+        if(element === operators[2] || element === operators[3]){
+            let pos = arrayOperands.indexOf(element);
+            arrayOperands[pos] = operate(element, +arrayOperands[pos - 1], +arrayOperands[p93os + 1]);
+            arrayOperands[pos - 1] = false;
+            arrayOperands[pos + 1] = false;
+            arrayOperands = arrayOperands.filter(Boolean);
+        }
+    });
+    return arrayOperands.pop();
+}
+
+
+//Get buttons and form 
 const btn1 = document.getElementById("btn1");
 const btn2 = document.getElementById("btn2");
 const btn3 = document.getElementById("btn3");
@@ -73,67 +141,63 @@ const btnclear = document.getElementById("btnCE");
 const btnequals = document.getElementById("btn=");
 const form = document.getElementById("results")
 
+//Init the calculator
 
+initCalc(0);
 
 //Event Listeners
 
 //Numbers
 btn1.addEventListener("click", () => {
-    addNumber(1, form);
+    appendNumber(1);
 });
 btn2.addEventListener("click", () => {
-    addNumber(2, form);
+    appendNumber(2);
 });
 btn3.addEventListener("click", () => {
-    addNumber(3, form);
+    appendNumber(3);
 });
 btn4.addEventListener("click", () => {
-    addNumber(4, form);
+    appendNumber(4);
 });
 btn5.addEventListener("click", () => {
-    addNumber(5, form);
+    appendNumber(5);
 });
 btn6.addEventListener("click", () => {
-    addNumber(6, form);
+    appendNumber(6);
 });
-btn7.addEventListener("click", () => {
-    addNumber(7, form);
+btn7.addEventListener("click", () =>{
+    appendNumber(7);
 });
 btn8.addEventListener("click", () => {
-    addNumber(8, form);
+    appendNumber(8);
 });
 btn9.addEventListener("click", () => {
-    addNumber(9, form);
+    appendNumber(9);
 }); 
 btn0.addEventListener("click", () => {
-    addNumber(0, form);
+    appendNumber(0);
 });
 
 //Operators
 btnplus.addEventListener("click", () => {
-    addOperator("+", form);
+    appendOperator("+");
 });
 btnminus.addEventListener("click", () => {
-    addOperator("-", form);
+    appendOperator("-");
 });
 btnmult.addEventListener("click", () => {
-    addOperator("*", form);
+    appendOperator("*");
 });
 btndivide.addEventListener("click", () => {
-    addOperator("/", form);
+    appendOperator("/");
 });
 
 //Specials
 btnequals.addEventListener("click", () => {
-    globalTwo = +globalTemp
-    globalTemp = 0;
-    let result = operate(operator, globalOne, globalTwo);
-    globalOne = result;
-    form.value = result;
+    form.value=calculate();
+    
 });
 btnclear.addEventListener("click", () => {
-    globalOne = 0;
-    globalTwo = 0;
-    globalTemp = 0;
-    form.value = "";
+    initCalc(0);
 });
